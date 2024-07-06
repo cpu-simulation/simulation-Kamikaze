@@ -27,7 +27,7 @@ class Bus:
         self.bus = [0 for _ in range(16)]
 
     def load_bus(self, data_list: list):
-        bus.bus = [0 for i in range(16)]  # reset the boss
+        bus.bus = [0] * 15  # reset the boss
         self.bus[16 - len(data_list):] = copy.deepcopy(data_list)
 
 
