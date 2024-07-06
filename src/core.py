@@ -1,7 +1,6 @@
 import copy
-
-import Components
-from Components import (
+from . import Components
+from .Components import (
     AC,
     AR,
     PC,
