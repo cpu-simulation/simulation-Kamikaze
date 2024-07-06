@@ -12,7 +12,6 @@ from Components import (
     memory,
     bus,
     branch_happened,
-    Halt
     )
 
 
@@ -137,7 +136,7 @@ class Core:
             address_in_mem += 1
 
     def execute_instruction(self) -> None:
-        while not Halt:
+        while not Components.Halt:
             bus.load_bus(PC.register)
             AR.LD()  # Setting AR to current PC since memory can only read AR and bus
             Components.fetch_instruction()
