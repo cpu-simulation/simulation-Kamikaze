@@ -1,13 +1,25 @@
 import copy
 
 import Components
-from Components import AC, AR, PC, DR, IR, TC, E, memory, bus, branch_happened, Halt
+from Components import (
+    AC,
+    AR,
+    PC,
+    DR,
+    IR,
+    TC,
+    E,
+    memory,
+    bus,
+    branch_happened,
+    Halt
+    )
 
 
 def mem_ref_ins_compile(ins, ad):
     ad_part = ad[2:]
-    for i in range(3-len(ad_part)):
-        ins += '0'
+    for i in range(3 - len(ad_part)):
+        ins += "0"
     ins += ad_part
     return hex(int(ins, 16))
 
@@ -76,23 +88,52 @@ class Core:
 
     def compile(self, instructions: list[str]) -> None:
 
-        memory_instructions_dict = {'AND': '0x0', 'ANDI': '0x8', 'ADD': '0x1', 'ADDI': '0x9',
-                                    'LDA': '0x2', 'LDAI': '0xA', 'STA': '0x3', 'STAI': '0xB',
-                                    'BUN': '0x4', 'BUNI': '0xC', 'BSA': '0x5', 'BSAI': '0xD',
-                                    'ISZ': '0x6', 'ISZI': '0xE'}
-        register_instruction_dict = {'CLA': '0x7800', 'CLE': '0x7400', 'CMA': '0x7200', 'CME': '0x7100',
-                                     'CIR': '0x7080', 'CIL': '0x7040', 'INC': '0x7020', 'SPA': '0x7010',
-                                     'SNA': '0x7008', 'SZA': '0x7004', 'SZE': '0x7002', 'HLT': '0x7001'}
+        memory_instructions_dict = {
+            "AND": "0x0",
+            "ANDI": "0x8",
+            "ADD": "0x1",
+            "ADDI": "0x9",
+            "LDA": "0x2",
+            "LDAI": "0xA",
+            "STA": "0x3",
+            "STAI": "0xB",
+            "BUN": "0x4",
+            "BUNI": "0xC",
+            "BSA": "0x5",
+            "BSAI": "0xD",
+            "ISZ": "0x6",
+            "ISZI": "0xE",
+        }
+        register_instruction_dict = {
+            "CLA": "0x7800",
+            "CLE": "0x7400",
+            "CMA": "0x7200",
+            "CME": "0x7100",
+            "CIR": "0x7080",
+            "CIL": "0x7040",
+            "INC": "0x7020",
+            "SPA": "0x7010",
+            "SNA": "0x7008",
+            "SZA": "0x7004",
+            "SZE": "0x7002",
+            "HLT": "0x7001",
+        }
         address_in_mem = 0
         for ins in instructions:
             compiling = ins.split()
             if len(compiling) == 1:  # Register reference instruction
-                ins_to_go = {'address': hex(address_in_mem), 'value': register_instruction_dict[compiling[0]]}
+                instruction = register_instruction_dict.get(compiling[0])
+                ins_to_go = {
+                    "address": hex(address_in_mem),
+                    "value": instruction,
+                }
 
             else:  # Memory reference instruction
-                ins_hex = mem_ref_ins_compile(memory_instructions_dict[compiling[0]], compiling[1])
-                ins_to_go = {'address': hex(address_in_mem), 'value': ins_hex}
-            Core.memory_write(self, ins_to_go)
+                ins_hex = mem_ref_ins_compile(
+                    memory_instructions_dict[compiling[0]], compiling[1]
+                )
+                ins_to_go = {"address": hex(address_in_mem), "value": ins_hex}
+            self.memory_write(ins_to_go)
             address_in_mem += 1
 
     def execute_instruction(self) -> None:

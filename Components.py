@@ -15,7 +15,7 @@ class Register:  # Register : [b_n-1, ..., b_0]
 
     def LD(self):
         global bus
-        self.register = copy.deepcopy(bus.bus[16 - self.size:])
+        self.register = copy.deepcopy(bus.bus[16 - self.size :])
 
     def CLR(self):
         for _ in range(self.size):
@@ -28,7 +28,7 @@ class Bus:
 
     def load_bus(self, data_list: list):
         bus.bus = [0] * 15  # reset the boss
-        self.bus[16 - len(data_list):] = copy.deepcopy(data_list)
+        self.bus[16 - len(data_list) :] = copy.deepcopy(data_list)
 
 
 def convert_AR_to_address_for_read():
@@ -104,8 +104,10 @@ def alu_SUBTRACT():  # AC = AC-DR
 
 
 # CONTROL UNIT IS DEFINED HERE
-def find_memory_reference_instruction(instruction_list: list):  # Used to decode instructions
-    inst = ''
+def find_memory_reference_instruction(
+    instruction_list: list,
+):  # Used to decode instructions
+    inst = ""
     for i in instruction_list:
         inst += str(i)
     return int(inst, 2)
@@ -228,13 +230,27 @@ def HLT():
 
 
 memory_reference_instructions_dict = {
-    0: AND, 1: ADD, 2: LDA, 3: STA,
-    4: BUN, 5: BSA, 6: ISZ
+    0: AND,
+    1: ADD,
+    2: LDA,
+    3: STA,
+    4: BUN,
+    5: BSA,
+    6: ISZ,
 }
 register_reference_instruction_dict = {
-    '800': CLA, '400': CLE, '200': CMA, '100': CME,
-    '80': CIR, '40': CIL, '20': INC, '10': SPA,
-    '8': SNA, '4': SZA, '2': SZE, '1': HLT
+    "800": CLA,
+    "400": CLE,
+    "200": CMA,
+    "100": CME,
+    "80": CIR,
+    "40": CIL,
+    "20": INC,
+    "10": SPA,
+    "8": SNA,
+    "4": SZA,
+    "2": SZE,
+    "1": HLT,
 }
 
 
